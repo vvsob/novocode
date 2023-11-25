@@ -1,0 +1,30 @@
+{% extends "novocode_index/base.html" %}
+{% block body %}
+<h1>Your submissions</h1>
+<ul>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Problem</th>
+                <th scope="col">Compiler</th>
+                <th scope="col">Verdict</th>
+                <th scope="col">Details</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for submission in submissions %}
+            <tr>
+                <td>{{ submission.timestamp }}</td>
+                <td>{{ submission.problem }}</td>
+                <td>{{ submission.compiler }}</td>
+                <td>{{ submission.verdict |safe }}</td>
+                <td><a href="{% url 'submission' token=submission.token %}">View</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</ul>
+
+{% endblock body %}
+

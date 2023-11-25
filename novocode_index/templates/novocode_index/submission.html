@@ -1,0 +1,9 @@
+{% extends "novocode_index/base.html" %}
+{% block body %}
+<h1>Submission</h1>
+<p>ID: <span class="font-monospace">{{submission.token}}</span></p>
+<div>
+    <h2>Source:</h2>
+    <pre>{{source}}</pre>
+</div>
+{% endblock %}

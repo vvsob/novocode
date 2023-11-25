@@ -1,0 +1,8 @@
+{% extends "novocode_index/base.html" %}
+{% load crispy_forms_tags %}
+{% block body %}
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+    {{ form|crispy }}
+    <input class="btn btn-primary" type="submit" value="Submit">
+</form>
+{% endblock body %}

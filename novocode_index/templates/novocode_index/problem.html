@@ -1,0 +1,27 @@
+{% extends "novocode_index/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<h1><span class="text-secondary">{{problem.id}}.</span> {{ problem.name }}</h1>
+{% for block in blocks %}
+{% if block.title %}
+<h2>{{ block.title }}</h2>
+{% endif %}
+<div>{{ block.content }}</div>
+{% endfor %}
+{% if user.is_authenticated %}
+<div>
+    <h2>Send</h2>
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+        {{ form|crispy }}
+        <input class="btn btn-primary" type="submit" value="Submit">
+    </form>
+</div>
+{% else %}
+<div>
+<p>
+    <strong>You have to be logged in to send solutions</strong>
+</p>
+</div>
+{% endif %}
+{% endblock body %}
