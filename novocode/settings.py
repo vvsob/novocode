@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'novocode_index',
     'crispy_forms',
     'crispy_bootstrap5',
+    'compressor',
 ]
 
 MIDDLEWARE = [
@@ -136,6 +137,16 @@ STATIC_ROOT = '/var/www/static/'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = '/var/www/media/'
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    'compressor.finders.CompressorFinder',
+]
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-auto-field

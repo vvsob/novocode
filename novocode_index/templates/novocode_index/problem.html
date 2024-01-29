@@ -2,26 +2,31 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-<h1><span class="text-secondary">{{problem.id}}.</span> {{ problem.name }}</h1>
-{% for block in blocks %}
-{% if block.title %}
-<h2>{{ block.title }}</h2>
-{% endif %}
-<div>{{ block.content }}</div>
-{% endfor %}
-{% if user.is_authenticated %}
-<div>
-    <h2>Send</h2>
-    <form method="post" enctype="multipart/form-data">{% csrf_token %}
-        {{ form|crispy }}
-        <input class="btn btn-primary" type="submit" value="Submit">
-    </form>
+<div class="main-content">
+    <div class="container-fluid section text-center">
+        <h1 class="m-0">{{ problem.name }}</h1>
+    </div>
+    {% for block in blocks %}
+    <div class="container-fluid section">
+        {% if block.title %}
+        <h2>{{ block.title }}</h2>
+        {% endif %}
+        <div>{{ block.content }}</div>
+    </div>
+    {% endfor %}
+    <div class="container-fluid section">
+        {% if user.is_authenticated %}
+        <h2>Submit</h2>
+        <form method="post" enctype="multipart/form-data">{% csrf_token %}
+            {{ form|crispy }}
+            <input class="btn w-100 fs-5 py-3 btn-primary" type="submit" value="Submit">
+        </form>
+        {% else %}
+        <span>
+            <strong>You have to be logged in to send solutions</strong>
+        </span>
+        {% endif %}
+    </div>
 </div>
-{% else %}
-<div>
-<p>
-    <strong>You have to be logged in to send solutions</strong>
-</p>
-</div>
-{% endif %}
+
 {% endblock body %}

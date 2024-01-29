@@ -3,6 +3,8 @@ from .common import format_testing, format_judge_error
 
 
 def format_verdict(verdict):
+    if verdict is None:
+        return ""
     formatters = {
         'testing': format_testing,
         'icpc': format_icpc,

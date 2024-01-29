@@ -1,0 +1,49 @@
+@import "bootstrap/scss/bootstrap.scss";
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+$color-mode-type: data;
+
+$problem-gradient: linear-gradient(90deg, #1D7545 70%, #2C8756 100%);
+$problem-gradient-hover: linear-gradient(90deg, #155131 70%, #186039 100%);
+$section-border: 1px solid #383838;
+
+[data-bs-theme="dark"] {
+    --bs-body-bg: #020105;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    flex-shrink: 0;
+}
+
+.section {
+    width: 100%;
+    border-radius: 0.625rem;
+    border: $section-border;
+    padding: 1.25rem;
+}
+
+.entry-field {
+    width: 10rem;
+}
+
+.entry-field-small {
+    width: 6rem;
+}
+
+.entry-field-large {
+    width: 16rem;
+}
+
+.problem {
+    border-radius: 0.625rem;
+    background: $problem-gradient;
+    padding: 1.25rem;
+    box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.problem:hover {
+    background: $problem-gradient-hover;
+}

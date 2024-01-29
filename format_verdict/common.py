@@ -1,6 +1,6 @@
 def format_testing(verdict):
-    return """<div class="text-primary">Testing</div>"""
+    return """<span class="text-primary">Testing</span>"""
 
 
 def format_judge_error(verdict):
-    return """<div class="text-danger">Judge error</div>"""
+    return """<span class="text-danger">Judge error</span>"""

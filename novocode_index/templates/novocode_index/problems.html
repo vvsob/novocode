@@ -2,33 +2,22 @@
 {% block head %}
 <script>
     $(document).ready(function(){
-        $('tr[data-href]').click(function() {
+        $('div[data-href]').click(function() {
             document.location = $(this).data('href');
         });
-        $('tr[data-href]').css('cursor','pointer');
+        $('div[data-href]').css('cursor','pointer');
     });
 </script>
 {% endblock head %}
 {% block body %}
 <h1>Problems</h1>
-<ul>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for problem in problems %}
-            <tr data-href="{% url 'problem' pk=problem.id %}">
-                <th scope="row">{{ problem.id }}</th>
-                <td>{{ problem.name }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</ul>
+{% for problem in problems %}
+<div class="container py-2 my-3 d-flex align-items-center problem" data-href="{% url 'problem' pk=problem.id %}">
+    <div class="mx-2 fs-5">{{problem.name}}</div>
+    <div class="mx-2 ms-auto entry-field"><i class="bi bi-star-fill mx-2"></i>Testing</div>
+    <div class="mx-2 entry-field"><i class="bi bi-stopwatch-fill mx-2"></i>1 s, 128 mb</div>
+</div>
+{% endfor %}
 
 {% endblock body %}
 

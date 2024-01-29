@@ -1,6 +1,7 @@
 import uuid
 
 import django.shortcuts
+from django.core.files.base import ContentFile
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import UserCreationForm
@@ -29,14 +30,19 @@ class SubmitSolutionView(generic.TemplateView):
 
     def post(self, request, *args, **kwargs):
         f = SubmitSolutionForm(request.POST)
-        f.is_valid()
+
+        if not f.is_valid():
+            return render(request, self.template_name, {'form': f})
 
         submission = Submission()
         submission.token = str(uuid.uuid4())
         submission.owner = request.user
         submission.problem = f.cleaned_data['problem']
         submission.compiler = f.cleaned_data['compiler']
-        submission.source = request.FILES['source']
+        if 'source_file' not in request.FILES:
+            submission.source.save(f"submission", ContentFile(f.cleaned_data['source']))
+        else:
+            submission.source = request.FILES['source_file']
 
         submission.save()
         submission.send_testing()
@@ -64,6 +70,14 @@ class SubmissionDetailView(generic.TemplateView):
         submission = get_object_or_404(Submission, token=self.kwargs['token'])
         with submission.source.open('r') as source_file:
             source = source_file.read()
+        submission = {
+            'token': submission.token,
+            'timestamp': submission.timestamp,
+            'problem': submission.problem,
+            # 'verdict': submission.verdict,
+            'verdict': format_verdict(submission.verdict),
+            'compiler': submission.compiler
+        }
         return render(request, self.template_name, {'submission': submission, 'source': source})
 
 
@@ -83,15 +97,21 @@ class ProblemDetailsView(generic.TemplateView):
     def post(self, request, *args, **kwargs):
         problem = get_object_or_404(Problem, pk=self.kwargs['pk'])
 
+        problem = get_object_or_404(Problem, pk=self.kwargs['pk'])
+        blocks = problem.statement['blocks']
         f = SubmitSolutionProblemForm(request.POST)
-        f.is_valid()
+        if not f.is_valid():
+            return render(request, self.template_name, {'problem': problem, 'blocks': blocks, 'form': f})
 
         submission = Submission()
         submission.token = str(uuid.uuid4())
         submission.owner = request.user
         submission.problem = problem
         submission.compiler = f.cleaned_data['compiler']
-        submission.source = request.FILES['source']
+        if 'source_file' not in request.FILES:
+            submission.source.save(f"submission", ContentFile(f.cleaned_data['source']))
+        else:
+            submission.source = request.FILES['source_file']
 
         submission.save()
         submission.send_testing()
