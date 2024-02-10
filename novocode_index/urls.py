@@ -11,5 +11,6 @@ urlpatterns = [
     path('submissions', views.SubmissionListView.as_view(template_name="novocode_index/submissions.html"), name='submissions'),
     path('submission/<str:token>', views.SubmissionDetailView.as_view(template_name="novocode_index/submission.html"), name='submission'),
     path('problemset', views.ProblemListView.as_view(template_name="novocode_index/problems.html"), name='problems'),
-    path('problem/<int:pk>', views.ProblemDetailsView.as_view(template_name="novocode_index/problem.html"), name='problem')
+    path('problem/<int:pk>', views.ProblemDetailsView.as_view(template_name="novocode_index/problem.html"), name='problem'),
+    path('create_problem', views.CreateProblemView.as_view(template_name="novocode_index/create_problem.html"), name='create_problem'),
 ]

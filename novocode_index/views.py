@@ -7,7 +7,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
-from .forms import CreationForm, SubmitSolutionForm, SubmitSolutionProblemForm
+from .forms import CreationForm, SubmitSolutionForm, SubmitSolutionProblemForm, CreateProblemForm
 from submissions.models import Submission
 from problems.models import Problem
 from format_verdict import format_verdict
@@ -26,7 +26,7 @@ class SignUpView(generic.CreateView):
 class SubmitSolutionView(generic.TemplateView):
     def get(self, request, *args, **kwargs):
         f = SubmitSolutionForm()
-        return render(request, "novocode_index/submit.html", {'form': f})
+        return render(request, self.template_name, {'form': f})
 
     def post(self, request, *args, **kwargs):
         f = SubmitSolutionForm(request.POST)
@@ -117,3 +117,25 @@ class ProblemDetailsView(generic.TemplateView):
         submission.send_testing()
 
         return django.shortcuts.redirect(reverse_lazy("submissions"))
+
+
+class CreateProblemView(generic.TemplateView):
+    def get(self, request, *args, **kwargs):
+        f = CreateProblemForm()
+        return render(request, self.template_name, {'form': f})
+
+    def post(self, request, *args, **kwargs):
+        f = CreateProblemForm(request.POST, request.FILES)
+
+        if not f.is_valid():
+            return render(request, self.template_name, {'form': f})
+
+        problem = Problem()
+        problem.name = f.cleaned_data['name']
+        problem.statement = f.cleaned_data['statement']
+        problem.problem_xml = request.FILES['problem_xml']
+        problem.problem_archive = request.FILES['problem_archive']
+
+        problem.save()
+
+        return django.shortcuts.redirect(reverse_lazy("problems"))
